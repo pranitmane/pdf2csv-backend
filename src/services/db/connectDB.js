@@ -4,9 +4,7 @@ const path = require('path')
 
 dotenv.config()
 
-// const { MONGO_URI } = process.env
-
-
+const { MONGO_URI } = process.env
 
 
 
