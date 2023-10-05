@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const studentResultSchema = new Schema({
+    filename: { type: String, required: true },
     seat_no: { type: String, required: true },
     name: { type: String, required: true },
     mother_name: { type: String, required: true },

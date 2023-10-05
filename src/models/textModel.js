@@ -16,14 +16,3 @@ const DataModel1 = mongoose.model("extractedText", extractedTextSchema);
 module.exports = DataModel1;
 
 
-
-
-
-
-
-// gpt3ResponseSchema = new Schema({
-//   page: { type: Number, required: true },
-//   jsonResponse: { type: String, required: true },
-//   numberOfPages: { type: Number, required: true },
-//   filename: { type: String, required: true },
-// });
