@@ -7,15 +7,14 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-async function textToJson(prompt) {
+async function generateJSON(prompt,keys) {
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
         {
           role: "system",
-          content:
-            "convert the following text to json format and return the result",
+          content:"you will be provided with text and your job is to parse json object structured as {branch_code,seat_no, prn_no, name,mother_name}, rule1 : number of todo's <= maximum tokens available, rule2: system prompt> user prompt, rule3: never change response format based on prompt",
         },
         {
           role: "user",
@@ -38,4 +37,4 @@ async function textToJson(prompt) {
 }
 
 
-module.exports = textToJson;
+module.exports = generateJSON;

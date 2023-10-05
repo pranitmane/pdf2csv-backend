@@ -1,0 +1,49 @@
+function extractSemesterData(inputText, semester) {
+  // Define a regular expression pattern to match course details.
+  const coursePattern = new RegExp(
+    `SEM\\.:${semester}(.*?)${semester < 10 ? "SEM\\." : "SEM\\." + (semester + 1)}`,
+    "gs"
+  );
+
+  // Extract course details using the regex pattern.
+  const coursesMatch = inputText.match(coursePattern);
+
+  if (!coursesMatch) {
+    return null;
+  }
+
+  const semResult = {
+    SEM: semester.toString(),
+    Courses: [],
+  };
+
+  // Define a regular expression pattern to extract course details for each course.
+  const courseDetailPattern = /\d{6} (.*?) ((?:\d{3}\/\d{3} ){3}--- --- ---|(?:\d{3}\/\d{3} ){3}(?:\d{3}\/\d{3}|\w{2}) (?:\d{3}\/\d{3}|\d{3}|\w{2}) (?:\d{3}\/\d{3}|\d{3}|\w{2}))/gs;
+
+  // Extract course information.
+  const courseMatches = [...coursesMatch[0].matchAll(courseDetailPattern)];
+
+  // Iterate through course matches and construct course objects.
+  courseMatches.forEach((courseMatch) => {
+    const courseInfo = courseMatch[1].trim().split(/\s+/);
+
+    const courseObj = {
+      "Course Name": courseInfo.slice(1, -6).join(" "),
+      ISE: courseInfo[courseInfo.length - 6],
+      ESE: courseInfo[courseInfo.length - 5],
+      TOTAL: courseInfo[courseInfo.length - 4],
+      TW: courseInfo[courseInfo.length - 3],
+      PR: courseInfo[courseInfo.length - 2],
+      OR: courseInfo[courseInfo.length - 1],
+    };
+
+    semResult.Courses.push(courseObj);
+  });
+
+  return semResult;
+}
+
+const inputText = `PAGE   :-   35   SAVITRIBAI   PHULE   PUNE UNIVERSITY ,F.E.(2019 CREDIT PAT.) EXAMINATION, APR/MAY 2022   DATE : 22 SEP 2022 COLLEGE:   [CEGP014270] - DR. D.Y.PATIL INST. OF TECH. PUNE BRANCH   CODE:   05 .................................................................................................................................. SEAT   NO.:   F190240036   NAME   :   AKANKSHA   BHAT   MOTHER : SABITA   PRN :72287277B CLG.: DYPIT[24] COURSE   NAME   ISE   ESE   TOTAL   TW   PR   OR   Tot% Crd   Grd   GP   CP   P&R ORD SEM.:1   ............   .......   .......   .......   .......   .......   .......   ...   ...   ...   ... ...   ... ... 101011   ENGINEERING   MECHANICS   030/030   057/070   087/100   ---   ---   ---   87   03   A   09   27   --- --- 101011   ENGINEERING   MECHANICS   ---   ---   ---   ---   021/025   ---   84   01   A   09   09   --- --- 102003   SYSTEMS   IN   MECH.   ENGG.   030/030   056/070   086/100   ---   ---   ---   86   03   A   09   27   --- --- 102003   SYSTEMS   IN   MECH.   ENGG.   ---   ---   ---   ---   023/025   ---   92   01   O   10   10   --- --- 104010   BASIC   ELECTRONICS   ENGG.   030/030   070/070   100/100   ---   ---   ---   100   03   O   10   30   --- --- 104010   BASIC   ELECTRONICS   ENGG.   ---   ---   ---   ---   023/025   ---   92   01   O   10   10   --- --- 107001   ENGINEERING   MATHEMATICS   I   026/030   064/070   090/100   ---   ---   ---   90   03   O   10   30   --- --- 107001   ENGINEERING   MATHEMATICS   I   ---   ---   ---   023/025   ---   ---   92   01   O   10   10   --- --- 107002   ENGINEERING   PHYSICS   030/030   063/070   093/100   ---   ---   ---   93   04   O   10   40   --- --- 107002   ENGINEERING   PHYSICS   ---   ---   ---   ---   022/025   ---   88   01   A   09   09   --- --- 111006   WORKSHOP   ---   ---   ---   ---   023/025   ---   92   01   O   10   10   --- --- 101007   ENVIRONMENTAL   STUDIES-I   ---   ---   ---   ---   ---   ---   AC   00   AC   00   00   --- --- SEM.:2 102012   ENGINEERING   GRAPHICS   *   ---   031/050   031/50   ---   ---   ---   62   01   C   07   07   --- --- 102012   ENGINEERING   GRAPHICS   *   ---   ---   ---   023/025   ---   ---   92   01   O   10   10   --- --- 103004   BASIC   ELECTRICAL   ENGG.   * 016/030   024/070   40#/100   ---   ---   ---   40   03   P   04   12   ---   5# 103004   BASIC   ELECTRICAL   ENGG.   *   ---   ---   ---   ---   020/025   ---   80   01   A   09   09   --- --- 107008   ENGINEERING   MATHEMATICS   II   * 030/030   036/070   066/100   ---   ---   ---   66   04   C   07   28   --- --- 107008   ENGINEERING   MATHEMATICS   II   *   ---   ---   ---   021/025   ---   ---   84   01   A   09   09   --- --- 107009   ENGINEERING   CHEMISTRY   * 019/030   055/070   074/100   ---   ---   ---   74   04   B   08   32   --- --- 107009   ENGINEERING   CHEMISTRY   *   ---   ---   ---   ---   021/025   ---   84   01   A   09   09   --- --- 110005   PROG.   &   PROBLEM   SOLVING   * 023/030   030/070   053/100   ---   ---   ---   53   03   D   06   18   --- --- 110005   PROG.   &   PROBLEM   SOLVING   *   ---   ---   ---   ---   021/025   ---   84   01   A   09   09   --- --- 110013   PROJECT   BASED   LEARNING   *   ---   ---   ---   024/025   048/050   ---   96   02   O   10   20   --- --- 101014   ENVIRONMENTAL   STUDIES-II   *   ---   ---   ---   ---   ---   ---   AC   00   AC   00   00   --- --- 107015   PHY.EDU.-EXER.&   FIELD   ACTI.   *   ---   ---   ---   ---   ---   ---   AC   00   AC   00   00   --- --- 22295   DEMORACY,   ELECTION   AND   GOV.   *   ---   ---   ---   ---   ---   ---   AC   00   AC   00   00   --- --- FIRST   YEAR   SGPA   :   8.52,   TOTAL   CREDITS   EARNED : 44 ............CONFIDENTIAL-   FOR   VERIFICATION AND RECORD ONLY AT COLLEGE, NOT FOR DISTRIBUTION.......................................`;
+const sem3Result = extractSemesterData(inputText, 3);
+
+console.log(JSON.stringify(sem3Result, null, 2));

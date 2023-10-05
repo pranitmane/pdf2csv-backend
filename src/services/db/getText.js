@@ -9,3 +9,7 @@ async function getText(filename) {
     const result = await DataModel1.find({filename: filename});
     return result;
 }
+
+module.exports = getText;
+
+//we will get text from database and devide it into three parts and return it as an array
