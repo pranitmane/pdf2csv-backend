@@ -1,41 +1,48 @@
+
 const PDFExtract = require("pdf.js-extract").PDFExtract;
-const DataModel1 = require('../models/textModel');
+const path = require('path');
+const mongoose = require('mongoose');
 
 const pdfExtract = new PDFExtract();
 const options = {}; // You can specify options if needed
 
-async function processPages(filePath,filename) {
-    try {
-      const data = await new Promise((resolve, reject) => {
-        pdfExtract.extract(filePath, options, (err, extractedData) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(extractedData);
-          }
-        });
-      });
-  
-      for (const [pageIndex, page] of data.pages.entries()) {
-        let extractedText = '';
-  
-        for (const element of page.content) {
-          if (element.str && element.dir === 'ltr') {
-            extractedText += element.str + ' '; // Add a space between text elements
-          }
-        }
-  
-        const document = { page: pageIndex + 1, textContent: extractedText.trim(), filename: filename, numberOfPages: data.pages.length};
-  
-        // Insert the document into the MongoDB collection using the Mongoose model
-        // await DataModel1.create(document);
-        console.log(document);
+const processPages = async (filePath, filename) => {
+  try {
+
+    const data = await pdfExtract.extract(filePath, options);
+
+    console.log(`Processing ${data.pages.length} pages...`);
+
+    for (const [pageIndex, page] of data.pages.entries()) {
+      console.log(`Processing page ${pageIndex + 1}...`);
+
+      // Check if the page has content
+      if (page.content && page.content.length > 0) {
+        // Use const and template literals
+        const extractedText = page.content
+          .filter((element) => element.str && element.dir === "ltr")
+          .map((element) => element.str)
+          .join(" ");
+        const filenameWithoutExt = path.basename(filename.toString(), ".pdf");
+        const document = {
+          page: pageIndex + 1,
+          textContent: extractedText.trim(),
+          filename: filename,
+          numberOfPages: data.pages.length,
+        };
+
+        await mongoose.connection.collection('extractedtexts').insertOne(document);
+        console.log(`Inserted document for page ${pageIndex + 1}`);
+      } else {
+        // Log the empty or undefined pages
+        console.log(`Page ${pageIndex + 1} has no content`);
       }
-  
-      console.log('Extraction and insertion completed successfully!');
-    } catch (err) {
-      console.error('Error during extraction and insertion:', err);
     }
+    console.log('Extraction and insertion completed successfully!');
+  } catch (err) {
+    console.error(err);
   }
+};
+
 
 module.exports = processPages;
