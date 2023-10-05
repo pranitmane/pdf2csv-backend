@@ -5,8 +5,8 @@ const path = require('path')
 dotenv.config()
 
 // const { MONGO_URI } = process.env
-// const {OPENAI_API_KEY} = process.env
-const MONGO_URI= "mongodb+srv://pranitmane:pranit43214321@first-cluster.rkslipd.mongodb.net/"
+
+
 
 
 
