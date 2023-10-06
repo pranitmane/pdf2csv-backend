@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const extractedTextSchema = new Schema({
   page: { type: Number, required: true },
-  textContent: { type: String, required:false },
-  filename: { type: String, required: true },
+  textContent: { type: String, required:true },
+  filename: { type: String, required: true }, 
   numberOfPages: { type: Number, required: true },
 });
 

@@ -1,14 +1,23 @@
 const mongoose = require('mongoose');
+const DataModel1 = require('../../models/textModel');
 const connectToMongoDB = require('./connectDB');
 const dotenv = require('dotenv');
 dotenv.config();
 
-async function getText(filename) {
-    await connectToMongoDB();
-    const DataModel1 = require('../../models/textModel');
-    const result = await DataModel1.find({filename: filename});
-    return result;
+const getText = async (filename) => {
+    try{
+        await connectToMongoDB();
+        const data = await mongoose.connection.collection('extractedtexts').find({ filename: filename }).toArray();
+        await mongoose.connection.close()
+        // console.log(data)
+        return data;
+    } catch (err) {
+        console.error(err.message)
+        process.exit(1)
+    }
 }
+
+
 
 module.exports = getText;
 

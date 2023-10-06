@@ -5,6 +5,8 @@ const connectToMongoDB = require('./services/db/connectDB');
 const dotenv = require('dotenv')
 dotenv.config()
 
+app.use(express.json());
+
 connectToMongoDB();
 
 app.use('/pdf2csv', uploadRouter)

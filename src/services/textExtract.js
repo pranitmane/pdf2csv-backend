@@ -23,7 +23,6 @@ const processPages = async (filePath, filename) => {
           .filter((element) => element.str && element.dir === "ltr")
           .map((element) => element.str)
           .join(" ");
-        const filenameWithoutExt = path.basename(filename.toString(), ".pdf");
         const document = {
           page: pageIndex + 1,
           textContent: extractedText.trim(),
