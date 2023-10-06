@@ -6,7 +6,14 @@ function studentInfoJSON(text) {
   const match = text.match(regex);
 
   if (!match) {
-    return null; // No match found
+    // throw new Error('Student info not found while parsing text : ',text);
+    return {
+      seat_no : 'Not found',
+      prn_no : 'Not found',
+      name : 'Not found',
+      mother_name : 'Not found',
+      college : 'Not found',
+    }
   }
 
   const [, seat_no, name, mother_name, prn_no, college] = match;
