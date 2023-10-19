@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const uploadRouter = require('./routes/allRoutes');
-const connectToMongoDB = require('./services/db/connectDB');
 const dotenv = require('dotenv')
 dotenv.config()
 

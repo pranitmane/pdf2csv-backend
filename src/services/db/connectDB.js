@@ -19,7 +19,4 @@ const connectToMongoDB = async () => {
       process.exit(1)
     }
   }
-
-  
-
 module.exports = connectToMongoDB;
