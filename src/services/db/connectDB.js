@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
-const path = require('path')
 
 dotenv.config()
 
@@ -20,6 +19,7 @@ const connectToMongoDB = async () => {
       process.exit(1)
     }
   }
+
   
 
 module.exports = connectToMongoDB;

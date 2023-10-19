@@ -7,7 +7,6 @@ dotenv.config()
 
 app.use(express.json());
 
-connectToMongoDB();
 
 app.use('/pdf2csv', uploadRouter)
          
