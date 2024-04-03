@@ -4,7 +4,9 @@ const uploadRouter = require('./routes/allRoutes');
 const dotenv = require('dotenv')
 dotenv.config()
 
+
 app.use(express.json());
+
 
 
 app.use('/pdf2csv', uploadRouter)

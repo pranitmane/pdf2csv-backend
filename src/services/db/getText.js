@@ -9,7 +9,6 @@ const getText = async (filename) => {
         await connectToMongoDB();
         const data = await mongoose.connection.collection('extractedtexts').find({ filename: filename }).toArray();
         await mongoose.connection.close()
-        // console.log(data)
         return data;
     } catch (err) {
         console.error(err.message)

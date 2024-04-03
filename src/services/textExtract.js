@@ -2,15 +2,15 @@
 const PDFExtract = require("pdf.js-extract").PDFExtract;
 const path = require('path');
 const mongoose = require('mongoose');
+const connectToMongoDB = require("./db/connectDB")
 
 const pdfExtract = new PDFExtract();
 const options = {}; // You can specify options if needed
 
 const processPages = async (filePath, filename) => {
   try {
-
+    await connectToMongoDB()
     const data = await pdfExtract.extract(filePath, options);
-
     console.log(`Processing ${data.pages.length} pages...`);
 
     for (const [pageIndex, page] of data.pages.entries()) {
@@ -38,6 +38,7 @@ const processPages = async (filePath, filename) => {
       }
     }
     console.log('Extraction and insertion completed successfully!');
+    await mongoose.disconnect()
   } catch (err) {
     console.error(err);
   }
